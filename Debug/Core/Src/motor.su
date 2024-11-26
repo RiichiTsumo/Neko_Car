@@ -4,9 +4,9 @@
 ../Core/Src/motor.c:65:20:__SetIn4PWM	16	static
 ../Core/Src/motor.c:73:6:MOTOR_Init	8	static
 ../Core/Src/motor.c:85:6:MOTOR_SetDecayMode	16	static
-../Core/Src/motor.c:94:6:A_Forward	16	static
+../Core/Src/motor.c:94:6:A_Backward	16	static
 ../Core/Src/motor.c:112:6:B_Forward	16	static
-../Core/Src/motor.c:130:6:A_Backward	16	static
+../Core/Src/motor.c:130:6:A_Forward	16	static
 ../Core/Src/motor.c:148:6:B_Backward	16	static
 ../Core/Src/motor.c:165:6:A_Brake	8	static
 ../Core/Src/motor.c:174:6:A_Coast	8	static

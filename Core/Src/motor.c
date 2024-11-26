@@ -91,7 +91,7 @@ void MOTOR_SetDecayMode(DecayMode mode)
  * @brief 控制电机A前进
  * @param speed 速度值（0-100）
  */
-void A_Forward(uint8_t speed)
+void A_Backward(uint8_t speed)
 {
     if (speed > MAX_SPEED)
         speed = MAX_SPEED;
@@ -127,7 +127,7 @@ void B_Forward(uint8_t speed)
  * @brief 控制电机A后退
  * @param speed 速度值（0-100）
  */
-void A_Backward(uint8_t speed)
+void A_Forward(uint8_t speed)
 {
     if (speed > MAX_SPEED)
         speed = MAX_SPEED;

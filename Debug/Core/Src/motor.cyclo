@@ -4,9 +4,9 @@
 ../Core/Src/motor.c:65:20:__SetIn4PWM	1
 ../Core/Src/motor.c:73:6:MOTOR_Init	1
 ../Core/Src/motor.c:85:6:MOTOR_SetDecayMode	1
-../Core/Src/motor.c:94:6:A_Forward	3
+../Core/Src/motor.c:94:6:A_Backward	3
 ../Core/Src/motor.c:112:6:B_Forward	3
-../Core/Src/motor.c:130:6:A_Backward	3
+../Core/Src/motor.c:130:6:A_Forward	3
 ../Core/Src/motor.c:148:6:B_Backward	3
 ../Core/Src/motor.c:165:6:A_Brake	1
 ../Core/Src/motor.c:174:6:A_Coast	1

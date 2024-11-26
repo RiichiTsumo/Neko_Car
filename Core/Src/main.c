@@ -115,7 +115,6 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  MOTOR_Init();
   HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
   /* USER CODE END SysInit */
 
@@ -125,27 +124,28 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM1_Init();
   MX_TIM4_Init();
+  MOTOR_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_3);
-  A_Forward(50);
-  B_Forward(50);
 
-  PID_Init(&mypid, 0, 0, 0, 800, 1000);
+  // PID_Init(&mypid, 0, 0, 0, 800, 1000);
 
   HAL_TIM_Base_Start(&htim2);
   HAL_TIM_Base_Start(&htim4);
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 145);		// 舵机A驱动代码，舵机占空比代数i取值为40~250
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 40);		// 舵机B驱动代码
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 40);		// 舵机C驱动代码
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 145);		// 舵机A驱动代码，舵机占空比代数i取值为40~250
-	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 40);		// 舵机B驱动代码
-	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 40);		// 舵机C驱动代码
+	  A_Forward(55);
+	  B_Forward(55);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
