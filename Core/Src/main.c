@@ -117,8 +117,6 @@ int main(void)
   /* USER CODE BEGIN SysInit */
   MOTOR_Init();
   HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
-  int count = 0;
-  int speed = 0;
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -145,7 +143,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  count = __HAL_TIM_GET_COUNTER(&htim1);
 	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 145);		// 舵机A驱动代码，舵机占空比代数i取值为40~250
 	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 40);		// 舵机B驱动代码
 	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 40);		// 舵机C驱动代码
@@ -154,8 +151,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	  // PID计算区域
 
-      float feedbackValue = 0; //这里获取到被控对象的反馈�?????
-      float targetValue = 0; //这里获取到目标�??
+      float feedbackValue = 0; //这里获取到被控对象的反馈值
+      float targetValue = 0; //这里获取到目标值
       PID_Calc(&mypid, targetValue, feedbackValue); //进行PID计算，结果在output成员变量
       int pid_result = (mypid.output);
       HAL_Delay(10);
