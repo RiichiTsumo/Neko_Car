@@ -206,6 +206,16 @@ void RIGHT(void)
 }
 
 /**
+ * @brief 右急转
+ */
+void RIGHT_IMM(void)
+{
+	A_Forward(70);
+	B_Backward(45);
+	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
+}
+
+/**
  * @brief 左转
  */
 void LEFT(void)
