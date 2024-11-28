@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "Track.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -63,16 +63,6 @@ void Error_Handler(void);
 #define SERVO2_GPIO_Port GPIOA
 #define SERVO3_Pin GPIO_PIN_2
 #define SERVO3_GPIO_Port GPIOA
-#define sensor1_Pin GPIO_PIN_3
-#define sensor1_GPIO_Port GPIOB
-#define sensor2_Pin GPIO_PIN_4
-#define sensor2_GPIO_Port GPIOB
-#define sensor3_Pin GPIO_PIN_5
-#define sensor3_GPIO_Port GPIOB
-#define sensor4_Pin GPIO_PIN_8
-#define sensor4_GPIO_Port GPIOB
-#define sensor5_Pin GPIO_PIN_9
-#define sensor5_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
