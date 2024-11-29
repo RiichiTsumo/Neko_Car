@@ -91,7 +91,9 @@ PID mypid = {0};
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim == &htim3){
-		meow = 1;
+		//meow = 1;
+		A_Backward(65);
+		B_Backward(55);
 	}
 }
 
@@ -157,13 +159,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  // HAL_TIM_Base_Start_IT(&htim3);
 		//环岛
-		/*if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)) && ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0))){
+	/*	if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)) && ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0))){
 			  HAL_TIM_Base_Start_IT(&htim3);
 			  while(meow == 0){
-					A_Forward(58);
-					B_Forward(48);
+					A_Forward(68);
+					B_Forward(50);
 			  }
+			meow = 0;
 		}*/
 	  Tracking();
     /* USER CODE END WHILE */

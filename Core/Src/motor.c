@@ -200,8 +200,8 @@ void B_Coast(void)
  */
 void RIGHT(void)
 {
-	A_Forward(60);
-	B_Backward(40);
+	A_Forward(55);
+	B_Backward(30);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }
 
@@ -210,8 +210,8 @@ void RIGHT(void)
  */
 void RIGHT_IMM(void)
 {
-	A_Forward(70);
-	B_Backward(45);
+	B_Forward(65);
+	A_Backward(30);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }
 
@@ -220,7 +220,7 @@ void RIGHT_IMM(void)
  */
 void LEFT(void)
 {
-	A_Backward(40);
-	B_Forward(60);
+	A_Backward(30);
+	B_Forward(55);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 52);
 }
