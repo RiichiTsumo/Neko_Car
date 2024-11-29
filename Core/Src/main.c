@@ -45,7 +45,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+int meow = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,6 +88,14 @@ void PID_Calc(PID *pid, float reference, float feedback)
 }
 
 PID mypid = {0};
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	if(htim == &htim3){
+		//meow = 1;
+		A_Backward(65);
+		B_Backward(55);
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -150,6 +158,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  // HAL_TIM_Base_Start_IT(&htim3);
+		//环岛
+	/*	if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)) && ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0))){
+			  HAL_TIM_Base_Start_IT(&htim3);
+			  while(meow == 0){
+					A_Forward(68);
+					B_Forward(50);
+			  }
+			meow = 0;
+		}*/
 	  Tracking();
     /* USER CODE END WHILE */
 
