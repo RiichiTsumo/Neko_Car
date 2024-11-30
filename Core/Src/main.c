@@ -169,7 +169,13 @@ int main(void)
 			  }
 			meow = 0;
 		}*/
-	  Tracking();
+	  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
+		  HAL_Delay(10);
+		  Tracking();
+	  }else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==0)){
+		  HAL_Delay(50);
+		  GO_Back();
+	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

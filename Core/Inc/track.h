@@ -4,5 +4,6 @@
 #include "main.h"
 
 extern void Tracking(void);
+extern void GO_Back(void);
 
 #endif

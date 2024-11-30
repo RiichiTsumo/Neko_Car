@@ -3,15 +3,13 @@
 
 #define A_SPEED 67						// 67
 #define B_SPEED 50					// 50
-#define DELAY_NO 20
-#define DELAY_SP 10
+#define DELAY_NO 10
+#define DELAY_SP 5
 
 
-void Tracking(void)
-{
+void Tracking(void){
 	   // 右转
 		if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
-			// HAL_Delay(DELAY_NO);
 			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
 		while(1)
 		{
@@ -27,7 +25,6 @@ void Tracking(void)
 		}
 		// 左转
 		else  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
-			// HAL_Delay(DELAY_NO);
 			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
 		while(1)
 		{
@@ -43,7 +40,7 @@ void Tracking(void)
 		}
 		// T字与十字路口
 		if (((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1))){
-			// HAL_Delay(DELAY_SP);
+			HAL_Delay(DELAY_SP);
 			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
 		while(1)
 		{
@@ -69,5 +66,15 @@ void Tracking(void)
 			A_Forward(A_SPEED);
 			B_Forward(B_SPEED);
 		}
-
  }
+
+void GO_Back(void){
+	while(1){
+	if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==0)){
+		A_Backward(A_SPEED - 30);
+		B_Backward(B_SPEED - 25);
+		}else{
+			break;
+		}
+	}
+}
