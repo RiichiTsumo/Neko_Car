@@ -89,13 +89,13 @@ void PID_Calc(PID *pid, float reference, float feedback)
 
 PID mypid = {0};
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+/*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	if(htim == &htim3){
 		//meow = 1;
 		A_Backward(65);
 		B_Backward(55);
 	}
-}
+}*/
 
 /* USER CODE END 0 */
 
@@ -158,22 +158,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // HAL_TIM_Base_Start_IT(&htim3);
-		//环岛
-	/*	if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)) && ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0) || (HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0))){
-			  HAL_TIM_Base_Start_IT(&htim3);
-			  while(meow == 0){
-					A_Forward(68);
-					B_Forward(50);
-			  }
-			meow = 0;
-		}*/
-	  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
-		  HAL_Delay(10);
+	 retry:
+	  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)){
+		  HAL_Delay(3);
+		  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
+			  goto retry;
+		  }
+		  meow ++;
 		  Tracking();
-	  }else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==0)){
-		  HAL_Delay(50);
-		  GO_Back();
 	  }
     /* USER CODE END WHILE */
 

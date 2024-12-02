@@ -71,6 +71,8 @@ void B_Coast(void);
  * @brief 右转
  */
 void RIGHT(void);
+void LEFT_IMM(void);
+void RIGHT_IMM(void);
 
 /**
 * @brief 左转
