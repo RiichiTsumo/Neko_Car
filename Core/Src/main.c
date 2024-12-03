@@ -158,15 +158,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 retry:
-	  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)){
-		  HAL_Delay(3);
-		  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
-			  goto retry;
-		  }
-		  meow ++;
-		  Tracking();
-	  }
+	  Tracking();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
