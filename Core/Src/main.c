@@ -145,9 +145,14 @@ int main(void)
 
   HAL_TIM_Base_Start(&htim2);
   HAL_TIM_Base_Start(&htim4);
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 145);		// 舵机A驱动代码，舵机占空比代数取值为40~250
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 40);		// 舵机B驱动代码
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 40);		// 舵机C驱动代码
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 200);		// 舵机A驱动代码，舵机占空比代数取值为40~250
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 200);		// 舵机B驱动代码
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 200);		// 舵机C驱动代码
+
+  HAL_Delay(2000);
+
+	A_Forward(60);
+	B_Forward(53);
 
   //HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   // HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
@@ -158,6 +163,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 200);		// 舵机A驱动代码，舵机占空比代数取值为40~250
+	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 200);		// 舵机B驱动代码
+	  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 200);	*/	// 舵机C驱动代码
 	  Tracking();
     /* USER CODE END WHILE */
 
