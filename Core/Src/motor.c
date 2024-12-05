@@ -200,8 +200,8 @@ void B_Coast(void)
  */
 void RIGHT(void)
 {
-	A_Forward(85);
-	B_Backward(35);
+	A_Forward(70);
+	B_Backward(25);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }
 
@@ -210,18 +210,8 @@ void RIGHT(void)
  */
 void LEFT_IMM(void)
 {
-	B_Forward(95);
-	A_Backward(45);
-	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
-}
-
-/**
- * @brief 左急转
- */
-void RIGHT_IMM(void)
-{
-	A_Forward(85);
-	B_Backward(55);
+	B_Forward(75);
+	A_Backward(25);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }
 
@@ -230,7 +220,17 @@ void RIGHT_IMM(void)
  */
 void LEFT(void)
 {
-	A_Backward(30);
-	B_Forward(70);
+	A_Backward(20);
+	B_Forward(75);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 52);
+}
+
+/**
+ * @brief 左急转
+ */
+void RIGHT_IMM(void)
+{
+	A_Forward(70);
+	B_Backward(30);
+	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }

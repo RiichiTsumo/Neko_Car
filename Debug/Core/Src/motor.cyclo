@@ -14,5 +14,5 @@
 ../Core/Src/motor.c:192:6:B_Coast	1
 ../Core/Src/motor.c:201:6:RIGHT	1
 ../Core/Src/motor.c:211:6:LEFT_IMM	1
-../Core/Src/motor.c:221:6:RIGHT_IMM	1
-../Core/Src/motor.c:231:6:LEFT	1
+../Core/Src/motor.c:221:6:LEFT	1
+../Core/Src/motor.c:231:6:RIGHT_IMM	1
