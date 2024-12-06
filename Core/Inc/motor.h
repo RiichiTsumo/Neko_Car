@@ -70,7 +70,7 @@ void B_Coast(void);
 /**
  * @brief 右转
  */
-void RIGHT(void);
+void RIGHT(uint8_t speed);
 
 /**
  * @brief 右急转
@@ -81,6 +81,6 @@ void LEFT_IMM(void);
 /**
 * @brief 左转
 */
-void LEFT(void);
+void LEFT(uint8_t speed);
 
 #endif /* __MOTOR_H_ */
