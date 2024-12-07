@@ -12,6 +12,7 @@
 ../Core/Src/motor.c:174:6:A_Coast	8	static
 ../Core/Src/motor.c:183:6:B_Brake	8	static
 ../Core/Src/motor.c:192:6:B_Coast	8	static
-../Core/Src/motor.c:201:6:RIGHT	8	static
-../Core/Src/motor.c:211:6:RIGHT_IMM	8	static
-../Core/Src/motor.c:221:6:LEFT	8	static
+../Core/Src/motor.c:201:6:RIGHT	16	static
+../Core/Src/motor.c:211:6:LEFT_IMM	8	static
+../Core/Src/motor.c:221:6:LEFT	16	static
+../Core/Src/motor.c:231:6:RIGHT_IMM	8	static
