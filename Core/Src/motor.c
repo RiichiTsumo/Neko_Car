@@ -200,8 +200,8 @@ void B_Coast(void)
  */
 void RIGHT(uint8_t speed)
 {
-	A_Forward(speed + 40);
-	B_Backward(20);
+	A_Forward(speed + 45);
+	B_Backward(30);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 157);
 }
 
@@ -220,8 +220,8 @@ void LEFT_IMM(void)
  */
 void LEFT(uint8_t speed)
 {
-	A_Backward(20);
-	B_Forward(speed + 25);
+	A_Backward(30);
+	B_Forward(speed + 35);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 52);
 }
 

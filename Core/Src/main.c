@@ -29,13 +29,13 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define A_SPEED 71					// 71
-#define B_SPEED 50						// 50
+#define A_SPEED 66					// 71
+#define B_SPEED 45						// 50
 #define DELAY_NO 10
 #define DELAY_SP 3
-#define DELAY_DF 550
+#define DELAY_DF 800
 #define LEFT_SPD 50
-#define RIGHT_SPD 40				// 若在右场，则将此处值 - 10
+#define RIGHT_SPD 50				// 若在右场，则将此处值 - 10
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -62,35 +62,33 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-/*void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	if(htim == &htim4){
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 		HAL_Delay(1000);
 		  for(int b = 40;b <= 240;b ++){
 			  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, b);
-			  HAL_Delay(100);
+			  HAL_Delay(500);
 		  }
 		  HAL_Delay(1000);
 		  for(int a = 240;a >= 50;a --){
 		  		  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, a);
-		  		  HAL_Delay(100);
+		  		  HAL_Delay(500);
 		  	  }
 		  HAL_Delay(1000);
 		  for(int b = 240;b >= 150;b --){
 		  		  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, b);
-		  		  HAL_Delay(100);
+		  		  HAL_Delay(500);
 		  	  }
 		  HAL_Delay(3500);
 		  for(int b = 150;b <= 240;b ++){
 		  	  		  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, b);
-		  	  		  HAL_Delay(100);
+		  	  		  HAL_Delay(500);
 		  	  	  }
 		  HAL_Delay(1000);
 		  for(int a = 50;a <= 240;a ++){
 		  		  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, a);
 		  		  HAL_Delay(200);
 		  	  }
-	}
-}*/
+}
 /* USER CODE END 0 */
 
 /**
@@ -117,14 +115,13 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-  HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
+  // HAL_TIM_Encoder_Start(&htim4, TIM_CHANNEL_ALL);
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_TIM1_Init();
-  MX_TIM4_Init();
   MX_USART3_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
@@ -136,11 +133,12 @@ int main(void)
   HAL_TIM_PWM_Start(&htim1,  TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim1,  TIM_CHANNEL_4);
 
-  // HAL_TIM_Base_Start_IT(&htim4);
+ // HAL_TIM_Base_Start_IT(&htim4);
 
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 240);		// 舵机A驱动代码，舵机占空比代数取值为40~250
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 40);		// 舵机B驱动代码
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 150);		// 舵机B驱动代码
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);		// 舵机C驱动代码!!!
+
 
   /* USER CODE END 2 */
 
@@ -201,7 +199,7 @@ int main(void)
 			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 225);
 		}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&& loop != 9){
 			LEFT_SPD - 15;
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 100);
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 120);
 			loop =9;
 						}
 			HAL_Delay(DELAY_NO);
@@ -255,7 +253,7 @@ int main(void)
 				  			}
 			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&loop != 9){
 				RIGHT_SPD - 15;
-							__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 200);
+							__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 180);
 							loop = 9;
 										}
 			HAL_Delay(DELAY_NO);
@@ -268,7 +266,7 @@ int main(void)
 			case 0:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
 			case 1:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 160);break;
 			case 2:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 140);break;
-			default:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 165);break;
+			default:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
 			HAL_Delay(500);
 		}
 		 if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)){
