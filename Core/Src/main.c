@@ -21,6 +21,8 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "stdio.h"
+#include <string.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -29,11 +31,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-#define A_SPEED 71				// 71
-#define B_SPEED 52						// 50
-#define DELAY_NO 8
-#define DELAY_SP 3
-#define DELAY_DF 750
+#define A_SPEED 61					// 71
+#define B_SPEED 42						// 50
+#define DELAY_NO 75
+#define DELAY_SP 25
+#define DELAY_DF 800
 #define LEFT_SPD 50
 #define RIGHT_SPD 40				// 若在右场，则将此处值 - 10
 /* USER CODE END PTD */
@@ -122,8 +124,8 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
   MX_TIM1_Init();
-  MX_USART3_UART_Init();
   MX_TIM3_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim2,  TIM_CHANNEL_2);
@@ -139,6 +141,7 @@ int main(void)
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_2, 150);		// 舵机B驱动代码
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);		// 舵机C驱动代码!!!
 
+  HAL_Delay(1000);
 
   /* USER CODE END 2 */
 
@@ -146,21 +149,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
+	  if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
 	  			HAL_Delay(DELAY_SP);
 	  			// 左、右侧入环
-	  			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(loop == 0)){
+	  			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(loop == 0)){
 	  				// loop = 1;
+	  				HAL_Delay(DELAY_NO);
 	  				A_Forward(A_SPEED);
 	  				B_Forward(B_SPEED);
-	  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 130);
-	  				HAL_Delay(200);
-	  			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(loop == 0)){
+	  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 75);
+	  			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(loop == 0)){
 	  				// loop = 1;
+	  				HAL_Delay(DELAY_NO);
 	  				A_Forward(A_SPEED);
 	  				B_Forward(B_SPEED);
-	  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 160);
-	  				HAL_Delay(200);
+	  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 225);
 	  			}
 	  		// 二阶段
 	  			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(loop == 1)){
@@ -184,20 +187,28 @@ int main(void)
 	  			}
 	  		}
 	  // 右转
-  else if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
-	  HAL_Delay(DELAY_SP);
-	  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(loop == 0)){
-			// loop = 1;
-			A_Forward(A_SPEED);
-			B_Forward(B_SPEED);
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 225);
-		}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&& loop != 9){
-			LEFT_SPD - 15;
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 120);
+  else if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)){
+	  HAL_Delay(DELAY_NO);
+		if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
+							for(int i = 100 ; i > 0 ; i --){
+								A_Backward(i);
+								B_Backward(i);
+							}
+							RIGHT(RIGHT_SPD);
+							HAL_Delay(DELAY_DF);
+							while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5) != 1){
+								RIGHT(RIGHT_SPD);
+							}
+						}
+		else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&& loop != 9){
+			RIGHT_SPD - 15;
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 180);
 			loop =9;
+						}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)){
+							goto left;
 						}
 			HAL_Delay(DELAY_NO);
-			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
+			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)){
 				right:
 		while(1)
 		{
@@ -208,12 +219,14 @@ int main(void)
 			case 2:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 160);break;
 			default:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 165);break;
 		}
-			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)){
+			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
 				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);
 				break ;
+			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
+				goto left;
 			}
 		}
-			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1))){
+			}else if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1))){
 				while(1){
 				A_Forward(A_SPEED);
 				B_Forward(B_SPEED);
@@ -227,80 +240,74 @@ int main(void)
 			}
 		}
 		// 左转
-  else  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
-  			HAL_Delay(2);
-  			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
-  								for(int i = 100 ; i > 0 ; i --){
-  									A_Backward(i);
-  									B_Backward(i);
-  								}
-  								LEFT(LEFT_SPD);
-  								HAL_Delay(DELAY_DF);
-  							}
-  			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(loop == 0)){
-  				  				// loop = 1;
-  				  				A_Forward(A_SPEED);
-  				  				B_Forward(B_SPEED);
-  				  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 75);
-  				  			}
-  			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&loop != 9){
-  				RIGHT_SPD - 15;
-  							__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 180);
-  							loop = 9;
-  										}
-  			HAL_Delay(DELAY_NO);
-  			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
-  				left:
-  		while(1)
-  		{
-  			LEFT(LEFT_SPD);
-  			switch(loop){
-  			case 0:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
-  			case 1:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 160);break;
-  			case 2:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 140);break;
-  			default:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
-  			HAL_Delay(500);
-  		}
-  		 if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)){
-  				goto right;
-  			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)){
-  	  			 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);
-  	  			 break ;
-  	  		 	}
-  		}
-  			}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1))){
-  				while(1){
-  				A_Forward(A_SPEED);
-  				B_Forward(B_SPEED);
-  				if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
-  					break;
-  				}
-  			}
-  			}else{
-  				A_Forward(A_SPEED);
-  				B_Forward(B_SPEED);
+		else  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
+			HAL_Delay(DELAY_NO);
+				if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)){
+								goto right;
+							}
+			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(loop == 0)){
+				  				// loop = 1;
+				  				A_Forward(A_SPEED);
+				  				B_Forward(B_SPEED);
+				  				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 75);
+				  			}
+			else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_5)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&loop != 9){
+				RIGHT_SPD - 15;
+							__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 180);
+							loop = 9;
+										}
+			HAL_Delay(DELAY_NO);
+			if ((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
+				left:
+		while(1)
+		{
+			LEFT(LEFT_SPD);
+			switch(loop){
+			case 0:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
+			case 1:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 160);break;
+			case 2:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 140);break;
+			default:__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 135);break;
+			HAL_Delay(500);
+		}
+		 if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
+			 __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);
+			 break ;
+		 	}else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)){
+				// goto right;
+			}
+		}
+			}else if(((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)||(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1))){
+				while(1){
+				A_Forward(A_SPEED);
+				B_Forward(B_SPEED);
+				if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
+					break;
+				}
+			}
+			}else{
+				A_Forward(A_SPEED);
+				B_Forward(B_SPEED);
 
-  			}
-  		}
-  		else  if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)){
-  		  			HAL_Delay(2);
-  		  			if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
-  		  								for(int i = 100 ; i > 0 ; i --){
-  		  									A_Backward(i);
-  		  									B_Backward(i);
-  		  								}
-  		  								LEFT(LEFT_SPD);
-  		  								HAL_Delay(DELAY_DF);
-  		  							}
-  		}
+			}
+		}
 		// T字与十字路口、出入环检查
 	  	  // T左转
-		if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
+	/*	if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1)){
 					for(int i = 100 ; i > 0 ; i --){
 						A_Backward(i);
 						B_Backward(i);
 					}
 					LEFT(LEFT_SPD);
+					loop = 9;
+					HAL_Delay(DELAY_DF);
+				}*/
+		// T右转
+		else if((HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==1)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)&&(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0)){
+					for(int i = 100 ; i > 0 ; i --){
+						A_Backward(i);
+						B_Backward(i);
+					}
+					RIGHT(RIGHT_SPD);
 					loop = 9;
 					HAL_Delay(DELAY_DF);
 				}
@@ -310,6 +317,7 @@ int main(void)
 			B_Forward(B_SPEED);
 			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_3, 150);
 		}
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
