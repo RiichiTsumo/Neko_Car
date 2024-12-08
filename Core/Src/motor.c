@@ -220,7 +220,7 @@ void LEFT_IMM(void)
  */
 void LEFT(uint8_t speed)
 {
-	A_Backward(30);
+	A_Backward(40);
 	B_Forward(speed + 35);
 	//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 52);
 }
